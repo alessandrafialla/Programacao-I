@@ -1,6 +1,5 @@
 /* Arquivo MAIN que usa o TAD racionais */
 
-/* coloque seus includes aqui */
 #include "racionais.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,12 +7,13 @@
 
 int main (){
     int n, max, i;
-   	struct racional r1, r2, rSoma, rSubtracao, rMultiplicacao, rDivisao;
-    srand(0); // inicia semente randomica
+    struct racional r1, r2, rSoma, rSubtracao, rMultiplicacao, rDivisao;
+    srand(0); /* inicia semente randomica*/
 	
-	/*Os racionais gerados teram valores de num e den entre 0 e max*/
+    /*Os racionais gerados teram valores de num e den entre 0 e max*/
     scanf("%d %d", &n, &max);
-
+	
+    /*n eh a quantidade de r1 e r2 que seram sorteados*/
     for (i = 1; i <= n; i++ ){
     	printf("%d: ", i);
     	
