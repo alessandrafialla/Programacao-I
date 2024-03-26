@@ -30,7 +30,7 @@ int mmc (int a, int b){
 
 /*Simplifica racional atraves de reducao e simplifica o sinal*/
 struct racional simplifica_r (struct racional r){
-int divisor;
+    int divisor;
 	
     /*Divide numerador e denominador pelo mdc entre eles*/
     divisor = mdc (r.num, r.den);
@@ -41,7 +41,7 @@ int divisor;
     /*Se numerador e denominador forem negativos, transforma em positivo*/
     if (r.den < 0){
         r.num = r.num * (-1);
-    r.den = r.den * (-1);
+        r.den = r.den * (-1);
     }
     return r;
 }
