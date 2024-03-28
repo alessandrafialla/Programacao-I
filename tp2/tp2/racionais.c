@@ -62,13 +62,13 @@ struct racional cria_r (int num, int den){
 /*Sorteia um numero racional e se for valido simplifica*/
 struct racional sorteia_r (int n){
     struct racional r;  
-    int num = aleat (0, n);
-    int den = aleat (0, n);
-    r = cria_r (num, den);//cria o racional e verifica se eh valido
+    int num = aleat (-n, n); // num e den devem ter valores entre -n e n
+    int den = aleat (-n, n);
+    r = cria_r (num, den);    //cria o racional e verifica se eh valido
     
     /*Verifica se o racional eh valido antes de simplificar*/
     if (r.valido)
-    	r = simplifica_r (&r); /*simplifica agora recebe um ponteiro, mudei para passar o endereço de r*/
+    	simplifica_r (&r); /*simplifica agora recebe um ponteiro, mudei para passar o endereço de r*/
     return r;
 }
 
@@ -87,8 +87,82 @@ int valido_r (struct racional r){
     return (r.den != 0);
 }
 
-/* aqui voce pode definir mais funcoes internas, caso queira ou precise */
+/*Retorna a soma simplificada entre r1 e r2 no parametro *r3 */
+void soma_r (struct racional r1, struct racional r2, struct racional *r3){
+    int num, den;
 
-/*
- * Implemente aqui as funcoes definidas no racionais.h.
-*/
+    den = mmc (r1.den, r2.den);
+    num = (((den / r1.den) * (r1.num) + ((den / r2.den) * r2.num)));
+    *r3 = cria_r (num, den); /*Esta funcao carrega dentro de r3 todos os campos*/
+    simplifica_r (r3); // r3 ja eh um ponteiro
+}
+
+void subtrai_r (struct racional r1, struct racional r2, struct racional *r3){
+    int num, den;
+    den = mmc (r1.den, r2.den);
+    num = (((den / r1.den) * r1.num) - ((den / r2.den) * r2.num));
+    *r3 = cria_r (num, den);
+    simplifica_r (r3);
+}
+
+void multiplica_r (struct racional r1, struct racional r2, struct racional *r3){
+    int num, den;
+
+    num = (r1.num * r2.num);
+    den = (r1.den * r2.den);
+    *r3 = cria_r (num, den);
+    simplifica_r (r3);
+}
+
+
+/*Mudaram para ret 0 ou 1*/
+int divide_r (struct racional r1, struct racional r2, struct racional *r3){
+    int num, den;
+
+    num = (r1.num * r2.den);
+    den = (r1.den * r2.num);
+    *r3 = criar_r (num, den); 
+    
+    /*Simplifica se o racional resultante da divisao for valido, retorna 1 se sim e 0 se nao*/
+    if (r3->valido){
+        simplifica_r (r3);
+        return 1;
+    }
+    return 0;
+}
+
+/* Compara dois racionais utilizando uma fracao equivalente */
+/* Retorna -1 se r1 < r2; 0 se r1 == r2; 1 se r1 > r2 */
+int compara_r (struct racional r1, struct racional r2){
+return 0;
+}
+
+void imprime_r (struct racional r) {
+    /*Imprime zero se o numerador for nulo*/
+    if (r.num == 0){
+        printf("0");
+        return;
+    }
+
+    /*Imprime apenas o numerador se o denominador for 1*/
+    if (r.den == 1){
+        printf ("%d", r.num);
+        return;
+    }
+
+    /*Imprime apenas "1" se numerador == denominador*/
+    if (r.num == r.den){
+        printf ("1");
+        return;
+    }
+
+    /*Imprime mensagem se o racional for invalido*/
+    if (!r.valido){
+        printf ("INVALIDO");
+        return;
+    }
+
+    /*Imprime na formatacao padrao*/
+    printf ("%d/%d" , r.num, r.den);
+    return;
+}
