@@ -6,8 +6,7 @@
 
 int main (){
     int n, max, i;
-    struct racional r1, r2, resultado;
-    struct racional *r3 = &resultado;
+    struct racional r1, r2, rSoma, rSubtracao, rMultiplicacao, rDivisao;
 
     srand (0); /* Inicia semente randomica */
 
@@ -18,10 +17,10 @@ int main (){
         printf ("%d: ", i);
 
         /* Sorteia r1 e r2 */
-        r1 = sorteia_r (n); // numerador e denominador devem estar entre -n e n
-        r2 = sorteia_r (n);
+        r1 = sorteia_r (max); // numerador e denominador devem estar entre -max e max
+        r2 = sorteia_r (max);
         
-        /*Imprime*/
+        /* Imprime r1 e r2*/
         imprime_r (r1);
         printf (" ");
         imprime_r (r2);
@@ -32,27 +31,27 @@ int main (){
             printf ("NUMERO INVALIDO\n");
             return 1;
         }
-
-        soma_r (r1, r2, r3);
-        imprime_r (*r3);
-        printf (" ");
-
-        subtrai_r (r1, r2, r3);
-        imprime_r (*r3);
-        printf (" ");
-
-        multiplica_r (r1, r2, r3);
-        imprime_r (*r3);
-        printf (" ");
         
-        /*Realiza a divisao e testa se resultado eh valido*/
-        divide_r (r1, r2, r3);
-        if (!valido_r (*r3)){
-            printf ("DIVISAO INVALIDA");
+        /* Realiza as operacoes*/
+        soma_r (r1, r2, &rSoma);
+        subtrai_r (r1, r2, &rSubtracao);
+        multiplica_r (r1, r2, &rMultiplicacao);
+        
+        /* Realiza a divisao e testa se resultado eh valido*/
+        //divide_r (r1, r2, &rDivisao);
+        if ( !divide_r (r1, r2, &rDivisao) ){
+            printf ("DIVISAO INVALIDA\n");
             return 1;
         }
 
-        imprime_r (*r3);
+        /* Imprime os resultados das operacoes*/
+        imprime_r (rSoma);
+        printf (" ");
+        imprime_r (rSubtracao);
+        printf (" ");
+        imprime_r (rMultiplicacao);
+        printf (" ");
+        imprime_r (rDivisao);
         printf (" \n");
     }
 
