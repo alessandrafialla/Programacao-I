@@ -17,7 +17,7 @@ int main (){
         printf ("%d: ", i);
 
         /* Sorteia r1 e r2 */
-        r1 = sorteia_r (max); // numerador e denominador devem estar entre -max e max
+        r1 = sorteia_r (max); // num e den devem estar entre -max e max
         r2 = sorteia_r (max);
         
         /* Imprime r1 e r2*/
@@ -38,7 +38,6 @@ int main (){
         multiplica_r (r1, r2, &rMultiplicacao);
         
         /* Realiza a divisao e testa se resultado eh valido*/
-        //divide_r (r1, r2, &rDivisao);
         if ( !divide_r (r1, r2, &rDivisao) ){
             printf ("DIVISAO INVALIDA\n");
             return 1;
