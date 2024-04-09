@@ -10,6 +10,13 @@
 int main (){
     /* vetor de ponteiros para racionais */
     struct racional **v;  /* equivalente a struct racional *v[] */
+    int n;
+
+    scanf( "%d", &n);
+    srand( 0);
+
+    for (int i = 0; i < n; i++){
+        *v[i] = cria_r(
 
     /* coloque seu codigo aqui */
 
