@@ -6,9 +6,9 @@
  * Voce deve implementa-las pois serao necessarias,
  * embora elas nao precisem estar no .h */
 
-/* retorna um numero aleatorio entre min e max, inclusive. */
+/* Retorna um numero aleatorio entre min e max, inclusive. */
 int aleat (long int min, long int max){
-    return (min + rand () % (max + a - min));
+    return (min + rand () % (max + 1 - min));
 }
 
 /* Maximo Divisor Comum entre a e b.         */
@@ -53,12 +53,47 @@ struct racional *cria_r (long int numerador, long int denominador){
     return r;
 }
 
-/*Testar*/
+/*Libera e aterra ponteiro*/
 void destroi_r (struct racional **r){
     free (*r);
     *r = NULL;
 }
 
+int valido_r (struct racional *r){
+    return r->den != 0;  
+}
+
+/* Imprime um numero racional */
+void imprime_r (struct racional *r) {
+
+    /* Imprime zero se o numerador for nulo */
+    if (r->num == 0){
+        printf("0");
+        return;
+    }
+
+    /* Imprime apenas o numerador se o denominador for 1 */
+    if (r->den == 1){
+        printf ("%ld", r->num);
+        return;
+    }
+
+    /* Imprime apenas "1" se numerador == denominador */
+    if (r->num == r->den){
+        printf ("1");
+        return;
+    }
+
+    /* Imprime mensagem se o racional for invalido */
+    if ( !valido_r(r) ){
+        printf ("INVALIDO");
+        return;
+    }
+
+    /* Imprime na formatacao padrao  */
+    printf ("%ld/%ld" , r->num, r->den);
+    return;
+}
 /* aqui voce pode definir mais funcoes internas, caso queira ou precise */
 
 /* Implemente aqui as funcoes cujos prototipos estao em racionais.h */
