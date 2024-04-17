@@ -162,6 +162,7 @@ int compara_r (struct racional *r1, struct racional *r2){
         return 1;
 }
 
+
 /* Imprime um numero racional */
 void imprime_r (struct racional *r) {
 

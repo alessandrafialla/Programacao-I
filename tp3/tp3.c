@@ -30,9 +30,9 @@ void imprime_vetor_racionais (struct racional **v, int n){
         imprime_r(v[i]);
         if (i < n-1) // nao imprime o espaco no ultimo elemento
             printf (" ");
+        }
+        printf ("\n");
     }
-    printf ("\n");
-}
 
 /* Ordena o vetor   */
 void selection_sort (struct racional **v, int n){
@@ -40,22 +40,32 @@ void selection_sort (struct racional **v, int n){
     struct racional *aux;
 
     /*Considera o primeiro elemento do vetor como menor*/
-    for(i = 0; i < n; i++){
+    for(i = 0; i < n -1; i++){
         menor = i;
 
         /*Verifica indice do menor valor do vetor*/
-        for (i = 1; i < n; i++){
+        for (i = 1; i < n - 1; i++){
             if (compara_r(v[menor], v[i])  == 1){
                 menor = i;
             }
-            /* Ordena a posicao i do vetor */
+         }
+        /* Ordena a posicao i do vetor */
             aux = v[menor];
             v[menor] = v[i];
             v[i] = aux;
-        }
-        //free (aux);
     }
 }
+
+/*int menor_indice (struct racional **v, n){
+    if (n<= 1){
+        return 0;
+    }}*/
+/*
+void ordena_vetor(struct racional **v, int n){
+    int menor, i;
+    struct racional *aux;
+
+*/
 
 int main (){
 
@@ -63,9 +73,7 @@ int main (){
     struct racional **v;  /* equivalente a struct racional *v[] */
     struct racional *soma;
     int n, i, j;
-    long int num, den;
-    
-    //srand(0);
+    long int num, den;  
 
     /* 0 < n < 100 */
     scanf("%d", &n);
@@ -91,13 +99,20 @@ int main (){
     /*Ordena vetor e imprime*/
     selection_sort(v, n);
     imprime_vetor_racionais(v, n);
+    
+    
+    //soma = cria_r (0, 0); //aloca memoria para a soma e inicializa com 0
 
-    soma = cria_r (0, 0); //aloca memoria para a soma e inicializa com 0
+    if (n > 0){
+        soma = v[0];
 
-    for (j = 0; j < n; j++){
-        soma = soma_r (v[j], soma);
+        for (j = 1; j < n; j++){
+            soma = soma_r (v[j], soma);
+        }
     }
+    printf("a soma de todos os elementos eh: ");
     imprime_r(soma);
+    printf("\n");
     destroi_r(&soma);
 
 
@@ -124,9 +139,22 @@ int main (){
     }
     
     */
-    for (i = 0; i < n; i++)
-        destroi_r(&v[i]);
-    
+    /*if (n <= 1)
+        destroi_r(&soma);
+    else {
+        for (i = 0; i < n; i++)
+            destroi_r(&v[i]);
+
+        destroi_r(&soma);
+    }
+    free(v); */
+    for (i = 0; i < n; i++){
+            destroi_r(&v[i]);
+        }
+   /* if (n > 1)
+        destroi_r(&soma);*/
+
     free(v);
+
     return 0;
 }
