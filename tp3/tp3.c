@@ -24,7 +24,8 @@ void elimina_invalidos (struct racional **v, int *n){
 /* Imprime todos os racionais do vetor                  */
 void imprime_vetor_racionais (struct racional **v, int n){
     int i;
-
+	if (n < 1)
+		return;
     /* Imprime os racionais contidos no vetor*/
     for (i = 0; i < n; i++){
         imprime_r(v[i]);
@@ -36,17 +37,17 @@ void imprime_vetor_racionais (struct racional **v, int n){
 
 /* Ordena o vetor   */
 void selection_sort (struct racional **v, int n){
-    int menor, i;
+    int menor, i, j;
     struct racional *aux;
 
     /*Considera o primeiro elemento do vetor como menor*/
-    for(i = 0; i < n -1; i++){
+    for(i = 0; i < n; i++){
         menor = i;
 
         /*Verifica indice do menor valor do vetor*/
-        for (i = 1; i < n - 1; i++){
-            if (compara_r(v[menor], v[i])  == 1){
-                menor = i;
+        for (j = i + 1; j < n; j++){
+            if (compara_r(v[menor], v[j])  == 1){
+                menor = j;
             }
          }
         /* Ordena a posicao i do vetor */
@@ -56,23 +57,12 @@ void selection_sort (struct racional **v, int n){
     }
 }
 
-/*int menor_indice (struct racional **v, n){
-    if (n<= 1){
-        return 0;
-    }}*/
-/*
-void ordena_vetor(struct racional **v, int n){
-    int menor, i;
-    struct racional *aux;
-
-*/
-
 int main (){
 
     /* vetor de ponteiros para racionais */
     struct racional **v;  /* equivalente a struct racional *v[] */
     struct racional *soma;
-    int n, i, j;
+    int n, i, j, k;
     long int num, den;  
 
     /* 0 < n < 100 */
@@ -94,62 +84,34 @@ int main (){
 
     /*Elimina os valores invalidos e imprime*/
     elimina_invalidos (v, &n);
-    imprime_vetor_racionais(v, n);
-
-    /*Ordena vetor e imprime*/
-    selection_sort(v, n);
-    imprime_vetor_racionais(v, n);
     
-    
-    //soma = cria_r (0, 0); //aloca memoria para a soma e inicializa com 0
-
     if (n > 0){
-        soma = v[0];
+    	imprime_vetor_racionais(v, n);
+    	/*Ordena vetor e imprime*/
+    	selection_sort(v, n);
+    	imprime_vetor_racionais(v, n);
+        soma = soma_r (v[0], 0);
 
         for (j = 1; j < n; j++){
             soma = soma_r (v[j], soma);
         }
-    }
-    printf("a soma de todos os elementos eh: ");
+
+   	printf("a soma de todos os elementos eh: ");
     imprime_r(soma);
     printf("\n");
     destroi_r(&soma);
-
-
-   /* printf("#####   TESTE DAS OPERACOES    #####\n");
-    printf(" COMPARA \n");
-
-    if (n > 1) {
-    imprime_r(v[0]);
-    printf(" ");
-    imprime_r(v[1]);
-    printf(" ");
-    int compara = compara_r (v[0], v[1]);
-    printf("%d\n", compara);
+    	
     }
-    else printf ("vetor com n < 1\n");
+    else
+    	printf("\n\n\n");
     
-    printf("\n");
-    printf("\n");
-    printf("SOMA\n");
-    if(n > 1){
-    struct racional *soma = soma_r (v[0], v[1]);
-    imprime_r(soma);
-    printf("\n");
-    }
-    
-    */
-    /*if (n <= 1)
-        destroi_r(&soma);
-    else {
-        for (i = 0; i < n; i++)
-            destroi_r(&v[i]);
+    //soma = cria_r (0, 0); //aloca memoria para a soma e inicializa com 0
 
-        destroi_r(&soma);
-    }
-    free(v); */
-    for (i = 0; i < n; i++){
-            destroi_r(&v[i]);
+    
+	
+   
+    for (k = 0; k < n; k++){
+            destroi_r(&v[k]);
         }
    /* if (n > 1)
         destroi_r(&soma);*/
