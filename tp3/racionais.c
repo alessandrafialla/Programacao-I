@@ -50,15 +50,16 @@ struct racional *cria_r (long int numerador, long int denominador){
     struct racional *r;
 
     /*Aloca memoria e testa, se erro retorna NULL*/
-    r = malloc (sizeof (struct racional));
-    if (r == NULL)
-        return NULL; 
+    r = (struct racional *) malloc (sizeof (struct racional));
 
-    /* Inicializa com valores fornecidos e simplifica se valido*/
-    r->num = numerador;
-    r->den = denominador;
-    if (valido_r(r))
-        simplifica_r (r); 
+    /*Inicializa se o malloc foi bem sucedido*/
+    if (r != NULL){    
+        r->num = numerador;
+        r->den = denominador;
+
+        if (valido_r(r))
+            simplifica_r (r); 
+    }
 
     return r;
 }
@@ -94,8 +95,8 @@ struct racional *soma_r (struct racional *r1, struct racional *r2){
     num = ((den / r1->den) * r1->num) + ((den / r2->den) * r2->num);
 
     r = cria_r (num, den); // aloca memoria e retorna simplificado, se possivel
-    if (r == NULL) // cria retorna NULL se tiver erro no malloc
-        return NULL;
+    
+    /*Se cria_r retornar NULL, r também retorna*/
     return r;
 }
 
@@ -108,8 +109,7 @@ struct racional *subtrai_r (struct racional *r1, struct racional *r2){
     num = ((den / r1->den) * r1->num) - ((den / r2->den) * r2->num);
 
     r = cria_r (num, den); //aloca memoria e retorna simplificado, se possivel
-    if (r == NULL) //se erro no malloc
-        return NULL;
+    
     return r;
 }
 
@@ -122,9 +122,8 @@ struct racional *multiplica_r (struct racional *r1, struct racional *r2){
     den = (r2->den * r2->den);
 
     r = cria_r (num, den); //aloca e retorna simplificado
-    if (r == NULL)
-        return NULL;
-    return r;
+    
+    return r; //sE cria_r retorna NULL, r também
 }
 
 /* Retorna a divisao simplificada dps racionais *r1 e *r2   

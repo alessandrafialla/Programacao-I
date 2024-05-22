@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "racionais.h"
 
-
 /* Elimina valores invalidos substituindo pelo ultimo valor do vetor */
 /* Modifica o valor de n que representa o tamanho do vetor           */
 void elimina_invalidos (struct racional **v, int *n){
@@ -24,18 +23,19 @@ void elimina_invalidos (struct racional **v, int *n){
 /* Imprime todos os racionais do vetor                  */
 void imprime_vetor_racionais (struct racional **v, int n){
     int i;
+
 	if (n < 1)
 		return;
+
     /* Imprime os racionais contidos no vetor*/
     for (i = 0; i < n; i++){
         imprime_r(v[i]);
-        if (i < n-1) // nao imprime o espaco no ultimo elemento
-            printf (" ");
+        printf (" ");
         }
         printf ("\n");
     }
 
-/* Ordena o vetor   */
+/* Ordena o vetor                              */
 void selection_sort (struct racional **v, int n){
     int menor, i, j;
     struct racional *aux;
@@ -69,7 +69,7 @@ int main (){
     scanf("%d", &n);
 
     /* Aloca dinamicamente um vetor[n] de ponteiros para numeros racionais */
-    v = malloc ( n * sizeof(struct racional *)); 
+    v = (struct racional **) malloc (n * sizeof(struct racional *)); 
     
     if (v == NULL)
         return 1;
@@ -86,35 +86,38 @@ int main (){
     elimina_invalidos (v, &n);
     
     if (n > 0){
-    	imprime_vetor_racionais(v, n);
+    	imprime_vetor_racionais(v, n); //vetor sem invalidos
+
     	/*Ordena vetor e imprime*/
     	selection_sort(v, n);
     	imprime_vetor_racionais(v, n);
-        soma = soma_r (v[0], 0);
 
+        soma = cria_r(numerador_r(v[0]), denominador_r(v[0]));
+
+        /*soma =soma_r (v[0], 1);//inicializa calculo da soma*/
+
+        /*Soma todos os elementos*/
         for (j = 1; j < n; j++){
-            soma = soma_r (v[j], soma);
+            struct racional *nova_soma;
+            nova_soma = soma_r (v[j], soma);
+            destroi_r(&soma);
+            soma = nova_soma;
         }
+    }
+    else{
+    	printf("\n\n");
+        soma = cria_r(0,0);
+    }
 
    	printf("a soma de todos os elementos eh: ");
     imprime_r(soma);
     printf("\n");
     destroi_r(&soma);
-    	
-    }
-    else
-    	printf("\n\n\n");
-    
-    //soma = cria_r (0, 0); //aloca memoria para a soma e inicializa com 0
-
-    
-	
+    		
    
     for (k = 0; k < n; k++){
             destroi_r(&v[k]);
         }
-   /* if (n > 1)
-        destroi_r(&soma);*/
 
     free(v);
 
