@@ -44,6 +44,25 @@ void simplifica_r (struct racional *r){
     }
 }
 
+// Cria um racional aleatorio com numerador e denominador entre -max e max
+struct racional *sorteia_r (long int max){
+    struct racional *r;
+
+    r = (struct racional *) malloc (sizeof (struct racional));
+
+    if (r != NULL) {
+
+        int num = aleat (-max, max); //num e den devem ter valores entre -max e max
+        int den = aleat (-max, max);
+        r = cria_r (num, den);    //cria o racional e aloca
+    
+        /*Verifica se o racional eh valido antes de simplificar */
+        if (valido_r(r))
+    	    simplifica_r (r); 
+    }
+    return r;
+}
+
 /* Cria e aloca memoria para um racional, se erro retorna NULL */
 /* Retorna o racional apontado na forma simplificada           */
 struct racional *cria_r (long int numerador, long int denominador){
@@ -135,6 +154,7 @@ struct racional *divide_r (struct racional *r1, struct racional *r2){
 
     num = (r1->num * r2->den);
     den = (r1->den * r2->num);
+
     r = cria_r (num, den);
     
     /* Retorna NULL se ocorreu erro na alocacao ou se resultado eh invalido*/
@@ -194,6 +214,3 @@ void imprime_r (struct racional *r) {
     return;
 }
 
-/* aqui voce pode definir mais funcoes internas, caso queira ou precise */
-
-/* Implemente aqui as funcoes cujos prototipos estao em racionais.h */

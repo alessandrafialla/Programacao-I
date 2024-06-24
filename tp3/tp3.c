@@ -82,9 +82,10 @@ int main (){
 
     imprime_vetor_racionais(v, n); //imprime vetor atual
 
-    /*Elimina os valores invalidos e imprime*/
+    /*Elimina os valores invalidos*/
     elimina_invalidos (v, &n);
     
+    //se vetor nao esta vazio
     if (n > 0){
     	imprime_vetor_racionais(v, n); //vetor sem invalidos
 
@@ -105,7 +106,7 @@ int main (){
         }
     }
     else{
-    	printf("\n\n");
+    	printf("\n\n");  //nao imprime o vetor
         soma = cria_r(0,0);
     }
 
@@ -114,12 +115,13 @@ int main (){
     printf("\n");
     destroi_r(&soma);
     		
-   
+    
     for (k = 0; k < n; k++){
             destroi_r(&v[k]);
         }
 
     free(v);
-
+    
     return 0;
-}
+
+    }
