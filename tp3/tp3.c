@@ -28,8 +28,10 @@ void imprime_vetor_racionais(struct racional **v, int n)
 {
     int i;
 
-    if (n < 1)
+    if (n < 1){
+        printf("\n");
         return;
+    }
 
     /* Imprime os racionais contidos no vetor*/
     for (i = 0; i < n; i++)
@@ -92,19 +94,16 @@ int main()
     }
 
     imprime_vetor_racionais(v, n); // imprime vetor atual
-
-    /*Elimina os valores invalidos*/
+    
     elimina_invalidos(v, &n);
 
-    // se vetor nao esta vazio
-    if (n > 0)
-    {
-        imprime_vetor_racionais(v, n); // vetor sem invalidos
+    imprime_vetor_racionais(v, n); // vetor sem invalidos
 
-        /*Ordena vetor e imprime*/
-        selection_sort(v, n);
-        imprime_vetor_racionais(v, n);
+    selection_sort(v, n);
 
+    imprime_vetor_racionais(v, n);
+
+    if (n > 0){ //se nao vazio a soma inicia com primeiro valor do vetor
         soma = cria_r(numerador_r(v[0]), denominador_r(v[0]));
 
         /*Soma todos os elementos*/
@@ -116,22 +115,20 @@ int main()
             soma = nova_soma;
         }
     }
-    else
-    {
-        printf("\n\n"); // nao imprime o vetor
+    else{  //se vetor estiver vazio cria soma com valor zero
         soma = cria_r(0, 0);
     }
 
     printf("a soma de todos os elementos eh: ");
     imprime_r(soma);
     printf("\n");
+
+    /*Destroi elementos*/
     destroi_r(&soma);
 
     for (k = 0; k < n; k++)
-    {
         destroi_r(&v[k]);
-    }
-
+    
     free(v);
 
     return 0;
