@@ -33,7 +33,6 @@ int lista_insere_inicio (struct lista *lista, int chave){
     if (lista_vazia(lista)){
         novo->prox = NULL;
         lista->ini = novo;
-        lista->ptr = NULL;
         (lista->tamanho)++;
     }
     else {
@@ -71,17 +70,33 @@ int lista_insere_fim (struct lista *lista, int chave){
     return 1;
 }
 
+
 int lista_insere_ordenado (struct lista *lista, int chave){
-    struct nodo *novo;
+    struct nodo *novo, *aux;
 
     /*Se a lista estiver vazia insere no inicio*/
     if (lista_vazia(lista)){
-        lista_insere_inicio(lista, chave);
-        return 1;
+        return lista_insere_inicio(lista, chave);
+    }
+        
+    novo = (struct nodo *) malloc(sizeof(struct nodo));
+    
+    if(novo == NULL)
+        return 0;
+        
+    aux = lista->ini;
+    
+    while (aux->prox != NULL && aux->chave <= chave){
+    	aux = aux->prox;
     }
 
-    novo = (struct nodo)
+    novo->chave = chave;
+    novo->prox = aux->prox;
+    aux->prox = novo;
+    return 1;
 }
+
+
 int lista_remove_inicio (struct lista *lista, int *chave){
     struct nodo *n;
 
@@ -124,6 +139,7 @@ int lista_remove_fim (struct lista *lista, int *chave){
     (lista->tamanho)--;
     return 1;
 }
+
 /*
 int lista_remove_ordenado (struct lista *lista, int chave){
 }
@@ -131,11 +147,12 @@ int lista_remove_ordenado (struct lista *lista, int chave){
 int lista_vazia (struct lista *lista){
     return (lista->ini == NULL);
 }
-/*
+
 int lista_tamanho (struct lista *lista){
     return lista->tamanho;
 }
 
+/*
 int lista_pertence (struct lista *lista, int chave){
 }
 */
@@ -145,7 +162,7 @@ void lista_inicia_iterador (struct lista *lista){
 }
 
 int lista_incrementa_iterador (struct lista *lista, int *chave){
-    if(lista->ptr == NULL)
+    if (lista->ptr == NULL)
         return 0;
     else {
         *chave = lista->ptr->chave;
