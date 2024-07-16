@@ -18,7 +18,8 @@ void imprimir_lista (struct lista *l){
     lista_inicia_iterador (l);
     while (lista_incrementa_iterador (l, &chave))
         printf ("%d ", chave);
-    printf ("%d\n", chave);
+    printf("\n");
+    /*printf ("%d\n", chave);*/
 }
 
 struct lista *teste_criar_lista ()
@@ -52,7 +53,7 @@ void teste_insere_inicio (struct lista *l, int limite)
         imprimir_lista (l);
     }
 }
-/*
+
 void teste_insere_fim (struct lista *l, int limite)
 {
     int i;
@@ -66,14 +67,13 @@ void teste_insere_fim (struct lista *l, int limite)
         imprimir_lista (l);
     }
 }
-*/
-/*
+
 void teste_remove_inicio (struct lista *l)
 {
     int chave;
-*/
+
     /* remove todo mundo */
-  /*while (! lista_vazia (l))
+    while (! lista_vazia (l))
         if (lista_remove_inicio (l, &chave))
             imprimir_lista (l);
 }
@@ -81,13 +81,13 @@ void teste_remove_inicio (struct lista *l)
 void teste_remove_fim (struct lista *l)
 {
     int chave;
-    */
+    
     /* remove todo mundo */
-    /*while (! lista_vazia (l))
+    while (! lista_vazia (l))
         if (lista_remove_fim (l, &chave))
             imprimir_lista (l);
 }
-
+/*
 void teste_insere_ordenado (struct lista *l)
 {
     lista_insere_ordenado (l, 13); imprimir_lista (l);
@@ -150,24 +150,24 @@ int main (void)
     printf ("- voce pode implementar TEMPORARIAMENTE uma funcao que imprime a lista acessando os nodos diretamente, ate encontrar o problema.\n");
     teste_insere_inicio (l, MAX); 
     printf ("\n\n");
-    /*
+    
     printf ("Teste 4: esvaziar a lista retirando do inicio:\n");
     printf ("Esperado: tem que imprimir a lista 5 vezes, a cada vez sem o primeiro elemento\n");
     printf ("          Ao final, mostrar a mensagem 'lista vazia'\n");
     teste_remove_inicio (l); 
     printf ("\n\n");
-
+    
     printf ("Teste 5: inserir 5 elementos no fim:\n");
     printf ("Esperado: tem que imprimir a lista 5 vezes, a cada vez com o maior elemento no fim\n");
     teste_insere_fim (l, MAX); 
     printf ("\n\n");
-
+    
     printf ("Teste 6: esvaziar a lista retirando do fim:\n");
     printf ("Esperado: tem que imprimir a lista 5 vezes, a cada vez sem o maior elemento\n");
     printf ("          Ao final, mostrar a mensagem 'lista vazia'\n");
     teste_remove_fim (l); 
     printf ("\n\n");
-
+    /*
     printf ("Teste 7: inserir 5 elementos em ordem:\n");
     printf ("Esperado: tem que imprimir a lista 5 vezes, sempre ordenada\n");
     printf ("Esperado: tem que mostrar remover de 11 ate 15\n");

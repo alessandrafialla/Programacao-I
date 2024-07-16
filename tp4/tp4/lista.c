@@ -30,11 +30,11 @@ int lista_insere_inicio (struct lista *lista, int chave){
 
     novo->chave = chave;
 
-    if(lista_vazia(lista)){
+    if (lista_vazia(lista)){
         novo->prox = NULL;
         lista->ini = novo;
         lista->ptr = NULL;
-        lista->tamanho = 1;
+        (lista->tamanho)++;
     }
     else {
         novo->prox = lista->ini;
@@ -43,13 +43,45 @@ int lista_insere_inicio (struct lista *lista, int chave){
     }
     return 1;
 }
-/*
+
 int lista_insere_fim (struct lista *lista, int chave){
+    struct nodo *novo;
+    struct nodo *aux;
+
+    /*Se a lista estiver vazia insere no inicio*/
+    if (lista_vazia(lista)){
+        lista_insere_inicio(lista, chave);
+        return 1;
+    }
+
+    novo = (struct nodo *) malloc(sizeof(struct nodo));
+
+    if(novo == NULL)
+        return 0;
+
+    novo->chave = chave;
+    novo->prox = NULL;
+    
+    aux = lista->ini;
+    while (aux->prox != NULL)
+        aux = aux->prox;
+
+    aux->prox = novo;
+    (lista->tamanho)++;
+    return 1;
 }
 
 int lista_insere_ordenado (struct lista *lista, int chave){
+    struct nodo *novo;
+
+    /*Se a lista estiver vazia insere no inicio*/
+    if (lista_vazia(lista)){
+        lista_insere_inicio(lista, chave);
+        return 1;
+    }
+
+    novo = (struct nodo)
 }
-*/
 int lista_remove_inicio (struct lista *lista, int *chave){
     struct nodo *n;
 
@@ -61,14 +93,38 @@ int lista_remove_inicio (struct lista *lista, int *chave){
         n = lista->ini->prox; /*salva o segundo elemento da lista*/
         free(lista->ini);
         lista->ini = n;
+        (lista->tamanho)--;
     }
     return 1;
 }
 
-/*
 int lista_remove_fim (struct lista *lista, int *chave){
-}
+    struct nodo *aux;
 
+    if (lista_vazia(lista)){
+        return 0;
+    }
+
+    /*Se a lista tiver apenas 1 elemento*/
+    if (lista->ini->prox == NULL){
+        *chave = lista->ini->chave;
+        free(lista->ini);
+        lista->ini = NULL;
+        return 1;
+    }
+
+    aux = lista->ini;
+
+    while(aux->prox->prox != NULL)
+        aux = aux->prox;
+
+    *chave = aux->prox->chave;
+    free(aux->prox);
+    aux->prox = NULL;
+    (lista->tamanho)--;
+    return 1;
+}
+/*
 int lista_remove_ordenado (struct lista *lista, int chave){
 }
 */
