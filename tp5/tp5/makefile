@@ -21,4 +21,4 @@ tp5.o: tp5.c
 	$(CC) -c $(CFLAGS) tp5.c
 
 clean:
-	rm -f $(objects) tp4
+	rm -f $(objects) tp5

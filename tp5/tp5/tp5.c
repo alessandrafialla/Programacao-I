@@ -56,10 +56,10 @@ void teste_dequeue (struct fila* f)
 
 int main (void)
 {
-    struct fila *f; 
+    struct fila *f;
     struct lef_t *l ;
     struct evento_t *ev ;
-    int dado; 
+    int dado;
     int i;
 
     printf ("Teste 1: criar fila e ver se esta vazia:\n");
@@ -111,48 +111,48 @@ int main (void)
     if (f != NULL)
         printf ("ERRO: fila nao eh NULL apos fila_destroi\n");
     printf ("\n\n");
-    
+
     printf ("Teste 8: Teste de criar uma lef:\n");
     printf ("         Imprimir lef vazia\n");
     /* cria uma lef l vazia */
     l = cria_lef ();
 
-    /* imprime l */ 
+    /* imprime l */
     imprime_lef (l);
     printf ("\n\n");
 
     printf ("Teste 9: Teste de inserir elementos na lef:\n");
     printf ("Esperado: Imprimir eventos de 1 a 4, com os id's zero\n");
-    /* insere eventos na LEF */ 
+    /* insere eventos na LEF */
     for (i = 0; i < 4; i++)
     {
         ev = cria_evento (i, 0, 0, 0) ;
         insere_lef (l, ev);
     }
 
-    /* imprime l */  
+    /* imprime l */
     imprime_lef (l);
     printf ("\n\n");
 
     printf ("Teste 10: Teste de inserir mais elementos na lef:\n");
     printf ("Esperado: Imprimir eventos de 2 a 6, com os id's 1\n");
     printf ("          Tem que manter a prioridades daqueles com id's 0\n");
-    /* insere mais eventos na LEF */ 
+    /* insere mais eventos na LEF */
     for (i = 2; i < 6; i++)
     {
         ev = cria_evento (i, 1, 1, 1);
         insere_lef (l, ev);
-    } 
+    }
 
-    /* imprime l */ 
+    /* imprime l */
     imprime_lef (l);
     printf ("\n\n");
-    
+
     printf ("Teste 10: Teste de inserir mais elementos na lef:\n");
     printf ("Esperado: Retirar corretamente os primeiros elementos.\n");
     /* enquanto l nao estiver vazia */
     while (!vazia_lef (l))
-    { 
+    {
         /*   retira o primeiro evento de l */
         ev = retira_lef (l);
         if (ev)
@@ -166,9 +166,10 @@ int main (void)
         imprime_lef (l);
     }
     printf ("\n\n");
+
     printf ("Teste 11: Destruir a lef:\n");
     printf ("Esperado: Nao pode ter leak, usar valgrind.\n");
-    /* destroi l */ 
+    /* destroi l */
     l = destroi_lef (l);
 
     return 0;

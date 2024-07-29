@@ -134,8 +134,9 @@ void imprime_lef(struct lef_t *l)
 
     while (aux != NULL)
     {
-        printf("  tempo %d tipo %d d1 %d d2 %d\n", aux->evento->tempo, aux->evento->tipo,
-               aux->evento->dado1, aux->evento->dado2);
+        printf("  tempo %d tipo %d d1 %d d2 %d\n", aux->evento->tempo, 
+        aux->evento->tipo, aux->evento->dado1, aux->evento->dado2);
+        
         aux = aux->prox;
         i++;
     }
