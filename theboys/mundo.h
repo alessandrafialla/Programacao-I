@@ -3,9 +3,10 @@
 #define T_FIM_DO_MUNDO 525600
 #define N_TAMANHO_MUNDO 20000
 #define N_HABILIDADES 10
-#define N_HEROIS  (N_HABILIDADES * 5)
-#define N_BASES (N_HEROIS / 6)
-#define N_MISSOES  (T_FIM_DO_MUNDO / 10)
+#define N_HEROIS  N_HABILIDADES * 5
+#define N_BASES N_HEROIS / 6
+#define N_MISSOES  T_FIM_DO_MUNDO / 100
+
 
 /*Codigo dos Eventos*/
 #define CHEGA 1
@@ -77,6 +78,10 @@ struct heroi_t cria_heroi(struct mundo_t w, int id);
 struct missao_t cria_missao(struct mundo_t w, int id);
 struct base_t cria_base (struct mundo_t w, int id);
 void eventos_iniciais(struct mundo_t *w);
+
+void chega(struct mundo_t *w, int tempo, int heroi, int base);
+void espera(struct mundo_t *w, int tempo, int heroi, int base);
+void desiste(struct mundo_t *w, int tempo, int heroi, int base);
 
 /* Calcula a distancia cartesiana entre dois pontos*/
 int distancia_cartesiana( struct local_t A, struct local_t B);

@@ -6,12 +6,13 @@ struct evento_t *cria_evento(int tempo, int tipo, int dado1, int dado2)
 {
     struct evento_t *novo = malloc(sizeof(struct evento_t));
     if (novo == NULL)
-        return 0;
+        return NULL;
 
     novo->tempo = tempo;
     novo->tipo = tipo;
     novo->dado1 = dado1;
     novo->dado2 = dado2;
+    printf("Evento do tipo %d criado!!!\n", tipo);
     return novo;
 }
 
@@ -65,12 +66,13 @@ int insere_lef(struct lef_t *l, struct evento_t *e)
         return 0;
 
     novo_n->evento = e;
-    novo_n->prox = NULL;
+    
 
     /* Se a LEF estiver vazia, insere na primeira posição */
     if (vazia_lef(l))
     {
         l->primeiro = novo_n;
+        novo_n->prox = NULL;
         return 1;
     }
 
