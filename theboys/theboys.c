@@ -37,12 +37,12 @@ int main (){
     struct mundo_t mundo;
     struct evento_t *evento; 
     int agendadas, cumpridas;  /*contabilizar missoes*/
-    
+    int fim_simulacao;
     /* declaracoes de variaveis aqui */
 
-    srand (0); /* use zero, nao faca com time (0) *//*
+    srand (0); /* use zero, nao faca com time (0) */
     agendadas = 0;
-    cumpridas = 0;*/
+    cumpridas = 0;
     mundo = cria_mundo();
     
    /* imprime_lef(mundo.lef); */ /*
@@ -63,8 +63,8 @@ int main (){
     sai(&mundo, 211, 0, 0); */
     /* prox eh viaja*/
     
-
-    while ((evento = retira_lef(mundo.lef)) != NULL) {
+    fim_simulacao = 0;
+    while (!fim_simulacao && (evento = retira_lef(mundo.lef)) != NULL) {
         mundo.relogio = evento->tempo;
         switch (evento->tipo) {
             case CHEGA:
@@ -95,16 +95,12 @@ int main (){
                 sai(&mundo, evento->tempo, evento->dado1, evento->dado2);
                 break;
             case FIM:
-                printf("Fim do mundo no tempo %d\n", evento->tempo);
-                fim(&mundo, cumpridas, agendadas) ;
-                return 0; 
-            default:
-                printf("Evento desconhecido: %d\n", evento->tipo);
-                break; 
+                fim(&mundo, cumpridas, agendadas);
+                fim_simulacao = 1;
+                break;;        
         }
             destroi_evento(evento);
-        }
-    /*imprime_lef(mundo.lef);*/
-    destroi_mundo(&mundo);
+    } /*
+    destroi_mundo(&mundo);*/
     return 1;
     }

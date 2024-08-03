@@ -1,8 +1,8 @@
 /*Estado Inicial*/
 #define T_INICIO 0
-#define T_FIM_DO_MUNDO 5256
-#define N_TAMANHO_MUNDO 200
-#define N_HABILIDADES 5
+#define T_FIM_DO_MUNDO 525600
+#define N_TAMANHO_MUNDO 20000
+#define N_HABILIDADES 10
 #define N_HEROIS  N_HABILIDADES * 5
 #define N_BASES N_HEROIS / 6
 #define N_MISSOES  T_FIM_DO_MUNDO / 100
@@ -59,15 +59,13 @@ struct mundo_t {
     int n_bases;
     struct base_t bases[N_BASES];
     int n_missoes; /*Numero Total de Missoes a Cumprir*/
-    struct missao_t missoes[N_MISSOES]; /*Lista que representa todas as Missoes*/
+    struct missao_t missoes[N_MISSOES]; /*Vetor com todas as missoes*/
     int n_habilidades; /*Numero de Habilidades Distintas Possiveis*/
-    struct conjunto *habilidades;
+    struct conjunto *habilidades; /*Todas as habilidades distintas*/
     int n_tam_mundo; /*Coordenadas Maximas do Plano Cartesiano*/
     int relogio; /*Inteiro para representar tempo atual no mundo*/
     struct lef_t *lef; /* Lista dos eventos futuros*/
 };
-
-
 
 /* Gera numero aleatorio entre min e max*/
 int aleat (int min, int max);
@@ -80,9 +78,9 @@ int base_proxima_valida(struct mundo_t *w, int base);
 
 /* Cria o mundo e suas entidades */
 struct mundo_t cria_mundo();
-struct heroi_t cria_heroi(struct mundo_t w, int id);
-struct missao_t cria_missao(struct mundo_t w, int id);
-struct base_t cria_base (struct mundo_t w, int id);
+struct heroi_t cria_heroi(struct mundo_t *w, int id);
+struct missao_t cria_missao(struct mundo_t *w, int id);
+struct base_t cria_base (struct mundo_t *w, int id);
 void eventos_iniciais(struct mundo_t *w);
 void destroi_mundo(struct mundo_t *w);
 
