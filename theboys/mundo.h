@@ -1,8 +1,8 @@
 /*Estado Inicial*/
 #define T_INICIO 0
-#define T_FIM_DO_MUNDO 525600
-#define N_TAMANHO_MUNDO 20000
-#define N_HABILIDADES 10
+#define T_FIM_DO_MUNDO 5256
+#define N_TAMANHO_MUNDO 200
+#define N_HABILIDADES 5
 #define N_HEROIS  N_HABILIDADES * 5
 #define N_BASES N_HEROIS / 6
 #define N_MISSOES  T_FIM_DO_MUNDO / 100
@@ -72,16 +72,29 @@ struct mundo_t {
 /* Gera numero aleatorio entre min e max*/
 int aleat (int min, int max);
 
+/* Calcula a distancia cartesiana entre dois pontos*/
+int distancia_cartesiana( struct local_t A, struct local_t B);
+
+/* Calcula a distancia de uma base */
+int base_proxima_valida(struct mundo_t *w, int base);
+
 /* Cria o mundo e suas entidades */
 struct mundo_t cria_mundo();
 struct heroi_t cria_heroi(struct mundo_t w, int id);
 struct missao_t cria_missao(struct mundo_t w, int id);
 struct base_t cria_base (struct mundo_t w, int id);
 void eventos_iniciais(struct mundo_t *w);
+void destroi_mundo(struct mundo_t *w);
 
+/* Eventos da simulacao */
 void chega(struct mundo_t *w, int tempo, int heroi, int base);
 void espera(struct mundo_t *w, int tempo, int heroi, int base);
 void desiste(struct mundo_t *w, int tempo, int heroi, int base);
+void viaja(struct mundo_t *w, int tempo, int heroi, int base);
+int missao(struct mundo_t *w,int tempo, int missao);
+void sai(struct mundo_t *w, int tempo, int heroi, int base);
+void entra(struct mundo_t *w, int tempo, int heroi, int base);
+void avisa(struct mundo_t *w, int tempo, int base);
+void fim(struct mundo_t *w, int cumpridas, int agendadas);
 
-/* Calcula a distancia cartesiana entre dois pontos*/
-int distancia_cartesiana( struct local_t A, struct local_t B);
+

@@ -7,7 +7,7 @@ ENTREGA = theboys-entrega
 CC = gcc
 
 # arquivos-objeto
-	objects = theboys.o lef.o fila.o mundo.o
+	objects = theboys.o lef.o fila.o mundo.o 
      
 all: theboys
 
@@ -25,6 +25,7 @@ mundo.o: mundo.c
 
 theboys.o: theboys.c
 	$(CC) -c $(CFLAGS) theboys.c
+	
 
 # arquivo TGZ para entregar
 entrega: clean

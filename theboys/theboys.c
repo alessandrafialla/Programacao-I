@@ -34,24 +34,77 @@ void verifica_missoes(struct mundo_t w) {
 }
 
 int main (){
-    struct mundo_t w; 
-    /*
-    struct evento_t *ev; *//*
-    int agendadas, cumpridas; *//* contabilizar missoes*/
-    /*int relogio;*/
-    int i; 
+    struct mundo_t mundo;
+    struct evento_t *evento; 
+    int agendadas, cumpridas;  /*contabilizar missoes*/
     
     /* declaracoes de variaveis aqui */
 
-    srand (0); /* use zero, nao faca com time (0) */
-
-    w = cria_mundo();
+    srand (0); /* use zero, nao faca com time (0) *//*
+    agendadas = 0;
+    cumpridas = 0;*/
+    mundo = cria_mundo();
     
-    verifica_missoes(w);
+   /* imprime_lef(mundo.lef); */ /*
     
-    for (i = 0; i < N_MISSOES; i++)
-        printf("%d\n", w.missoes[i].id);
+    printf("Teste 1:\n");
+    chega(&mundo, 100, 0, 0);
 
-    imprime_lef(w.lef);
+    printf("Teste 2: ESPERA\n");
+    espera(&mundo, 100, 0, 0);
+
+    printf("Teste 2: Avisa\n");
+    avisa(&mundo, 100, 0);
+   
+   printf("Teste ENTRA\n");
+    entra(&mundo, 100, 0, 0);
+
+    printf("Teste SAI\n");
+    sai(&mundo, 211, 0, 0); */
+    /* prox eh viaja*/
+    
+
+    while ((evento = retira_lef(mundo.lef)) != NULL) {
+        mundo.relogio = evento->tempo;
+        switch (evento->tipo) {
+            case CHEGA:
+                chega(&mundo, evento->tempo, evento->dado1, evento->dado2);
+                break; 
+            case ESPERA:
+                espera(&mundo, evento->tempo, evento->dado1, evento->dado2);
+                break; 
+            case DESISTE:
+                desiste(&mundo, evento->tempo, evento->dado1, evento->dado2);
+                break;
+            case VIAJA:
+                viaja(&mundo, evento->tempo, evento->dado1, evento->dado2);
+                break;
+            case MISSAO:
+                if(missao(&mundo, evento->tempo, evento->dado1))
+                    cumpridas++;
+                else
+                    agendadas++;
+                break; 
+            case AVISA:
+                avisa(&mundo, evento->tempo, evento->dado2);
+                break;
+            case ENTRA:
+                entra(&mundo, evento->tempo, evento->dado1, evento->dado2);
+                break;
+            case SAI: 
+                sai(&mundo, evento->tempo, evento->dado1, evento->dado2);
+                break;
+            case FIM:
+                printf("Fim do mundo no tempo %d\n", evento->tempo);
+                fim(&mundo, cumpridas, agendadas) ;
+                return 0; 
+            default:
+                printf("Evento desconhecido: %d\n", evento->tipo);
+                break; 
+        }
+            destroi_evento(evento);
+        }
+    /*imprime_lef(mundo.lef);*/
+    destroi_mundo(&mundo);
     return 1;
-}
+    }

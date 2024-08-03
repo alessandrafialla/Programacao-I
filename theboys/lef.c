@@ -12,7 +12,6 @@ struct evento_t *cria_evento(int tempo, int tipo, int dado1, int dado2)
     novo->tipo = tipo;
     novo->dado1 = dado1;
     novo->dado2 = dado2;
-    printf("Evento do tipo %d criado!!!\n", tipo);
     return novo;
 }
 
