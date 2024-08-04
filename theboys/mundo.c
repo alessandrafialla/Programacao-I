@@ -162,15 +162,15 @@ void chega(struct mundo_t *w, int tempo, int heroi, int base)
         ev = cria_evento(tempo, ESPERA, heroi, base);
         insere_lef(w->lef, ev);
 
-        printf("%6d: CHEGA HEROI %2d BASE %d ",tempo, heroi, base);
-        printf("(%2d/%2d) ESPERA\n" , presentes, lotacao);
+        printf("%6d: CHEGA HEROI %2d BASE %d ", tempo, heroi, base);
+        printf("(%2d/%2d) ESPERA\n", presentes, lotacao);
     }
     else
     {
         ev = cria_evento(tempo, DESISTE, heroi, base);
         insere_lef(w->lef, ev);
-        printf("%6d: CHEGA HEROI %2d BASE %d ",tempo, heroi, base);
-        printf("(%2d/%2d) DESISTE\n" , presentes, lotacao);
+        printf("%6d: CHEGA HEROI %2d BASE %d ", tempo, heroi, base);
+        printf("(%2d/%2d) DESISTE\n", presentes, lotacao);
     }
 }
 
@@ -336,12 +336,12 @@ int menor_base_valida(struct mundo_t *w, int missao)
     int dist[w->n_bases];
     struct base_t base;
     struct conjunto *aux, *uniao;
-    
+    struct conjunto *hab_heroi;
 
     /* Cria vetor contendo as distancias entre uma base e a missao. */
     for (i = 0; i < w->n_bases; i++)
-        dist[i] = distancia_cartesiana(w->missoes[missao].local_missao, 
-                                             w->bases[i].coordenadas);
+        dist[i] = distancia_cartesiana(w->missoes[missao].local_missao,
+                                       w->bases[i].coordenadas);
 
     menor = busca_menor(dist, w->n_bases);
 
@@ -353,17 +353,28 @@ int menor_base_valida(struct mundo_t *w, int missao)
         inicia_iterador_cjt(base.presentes);
         uniao = cria_cjt(w->n_habilidades);
 
+        /* Imprime o resumo da base */
+        printf("%6d: MISSAO %d BASE %d DIST %d HEROIS ", w->relogio,
+               missao, menor, dist[menor]);
+        imprime_cjt(base.presentes);
+
         /* Cria um conjunto com as habilidades dos heróis da base */
         while (incrementa_iterador_cjt(base.presentes, &heroi))
         {
             aux = uniao;
+            hab_heroi = w->herois[heroi].habilidades;
+
+            /* imprime as habilidades do heroi que vai se juntar a uniao*/
+            printf("%6d: MISSAO %d HAB HEROI %2d: ", w->relogio, missao, heroi);
+            imprime_cjt(hab_heroi);
+
             /*Junta as habilidades do heroi na uniao*/
-            uniao = uniao_cjt(aux, w->herois[heroi].habilidades); 
+            uniao = uniao_cjt(aux, hab_heroi);
             aux = destroi_cjt(aux);
         };
 
         /* Imprime as habilidades da base menor. */
-        printf("%6d: MISSAO %d ", w->relogio, missao);
+        printf("%6d: MISSAO %d UNIAO ", w->relogio, missao);
         printf("HAB BASE %d: ", menor);
         imprime_cjt(uniao);
 
@@ -385,15 +396,16 @@ int menor_base_valida(struct mundo_t *w, int missao)
 
 /* Analisa qual base tem os requisitos para realizar uma missao */
 /* Se a base possui, seus herois ganham aumento de experiencia */
-int missao(struct mundo_t *w, int tempo, int missao)
+int missao(struct mundo_t *w, int tempo, int missao, int *t)
 {
     int base, heroi;
     struct evento_t *ev;
     struct missao_t missao_atual;
 
     missao_atual = w->missoes[missao];
+    t[missao]++; /* Incrementa contador de tentativa de missao*/
 
-    printf("%6d: MISSAO %d HAB REQ: ", tempo, missao);
+    printf("%6d: MISSAO %d TENT %d HAB REQ: ", tempo, missao, t[missao]);
     imprime_cjt(missao_atual.habi_req);
 
     base = menor_base_valida(w, missao);
@@ -408,9 +420,7 @@ int missao(struct mundo_t *w, int tempo, int missao)
     }
 
     /* Se houver base válida */
-    printf("%6d: MISSAO %d CUMPRIDA ", tempo, missao);
-    printf("BASE %d HEROIS: ", base);
-    imprime_cjt(w->bases[base].presentes);
+    printf("%6d: MISSAO %d CUMPRIDA BASE %d\n", tempo, missao, base);
 
     /* Da experiência aos heróis da base válida */
     inicia_iterador_cjt(w->bases[base].presentes);
@@ -420,15 +430,50 @@ int missao(struct mundo_t *w, int tempo, int missao)
     return 1;
 }
 
+int maior_valor(int *t, int max)
+{
+    int maior, i;
+
+    maior = 0;
+    for (i = 0; i < max; i++)
+    {
+        if (t[i] > maior)
+        {
+            maior = t[i];
+        }
+    }
+    return maior;
+}
+
+int menor_valor(int *t, int max)
+{
+    int menor, i;
+
+    menor = t[0]; /* Considera o menor elemento como maior*/
+
+    for (i = 0; i < max; i++)
+    {
+        if (t[i] < menor)
+        {
+            menor = t[i];
+        }
+    }
+    return menor;
+}
+
 /* Calcula as estatisticas do mundo ao final da simulacao */
-void fim(struct mundo_t *w, int cumpridas, int agendadas)
+void fim(struct mundo_t *w, int cumpridas, int agendadas, int *t)
 {
     struct heroi_t h;
-    int i;
+    int i, min, max;
     float porcentagem, media;
 
     porcentagem = (float)(cumpridas * 100) / w->n_missoes;
     media = (float)agendadas / cumpridas;
+
+    /* Menores e Maiores quantidades de tentativa */
+    min = menor_valor(t, w->n_missoes);
+    max = maior_valor(t, w->n_missoes);
 
     printf("%6d: FIM\n", w->relogio);
 
@@ -437,13 +482,15 @@ void fim(struct mundo_t *w, int cumpridas, int agendadas)
     {
         h = w->herois[i];
         printf("HEROI  %d PAC  %d VEL %d EXP %d HABS ", i, h.paciencia,
-                                         h.velocidade, h.experiencia);
+               h.velocidade, h.experiencia);
         imprime_cjt(h.habilidades);
     }
 
-    printf("MISSOES CUMPRIDAS: %d/%d (%.2f%%)\n", cumpridas, w->n_missoes, 
-                                                            porcentagem);
-    printf("MEDIA %.2f TENTATIVAS/MISSAO\n", media);
+    printf("MISSOES CUMPRIDAS: %d/%d (%.2f%%)\n", cumpridas, w->n_missoes,
+           porcentagem);
+    printf("TENTATIVAS/MISSAO: MIN %d, MAX %d, MEDIA %.2f \n", min, max, media);
+
+    free(t);
     destroi_mundo(w);
 }
 
@@ -467,7 +514,7 @@ void destroi_mundo(struct mundo_t *w)
     /* Destroi as habilidades de cada missao */
     for (missao = 0; missao < w->n_missoes; missao++)
         destroi_cjt(w->missoes[missao].habi_req);
-        
+
     destroi_cjt(w->habilidades);
     destroi_lef(w->lef);
 }
