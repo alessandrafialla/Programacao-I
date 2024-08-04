@@ -1,6 +1,7 @@
-#include "lef.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "lef.h"
+
 
 struct evento_t *cria_evento(int tempo, int tipo, int dado1, int dado2)
 {
