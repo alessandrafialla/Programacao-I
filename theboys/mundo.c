@@ -467,13 +467,21 @@ void fim(struct mundo_t *w, int cumpridas, int agendadas, int *t)
     struct heroi_t h;
     int i, min, max;
     float porcentagem, media;
-
+    /* int tent;*/
     porcentagem = (float)(cumpridas * 100) / w->n_missoes;
     media = (float)agendadas / cumpridas;
 
     /* Menores e Maiores quantidades de tentativa */
     min = menor_valor(t, w->n_missoes);
     max = maior_valor(t, w->n_missoes);
+    /*tent = 0;*/
+
+    /* Acumula a quantidade de tentativas*/ /*
+    for ( i = 0; i < w->n_missoes; i++) {
+        tent += t[i]; 
+    }
+
+    media = (float) tent / w->n_missoes;*/
 
     printf("%6d: FIM\n", w->relogio);
 
