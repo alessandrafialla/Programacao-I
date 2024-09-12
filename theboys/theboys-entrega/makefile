@@ -7,7 +7,7 @@ ENTREGA = theboys-entrega
 CC = gcc
 
 # arquivos-objeto
-	objects = theboys.o lef.o fila.o mundo.o conjunto.o
+	objects = theboys.o lef.o fila.o mundo.o
      
 all: theboys
 
