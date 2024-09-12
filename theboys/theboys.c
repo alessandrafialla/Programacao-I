@@ -5,33 +5,19 @@
 #include "mundo.h"
 #include "conjunto.h"
 
-int *cria_vetor(){
-    int i;
-    int *vetor = malloc(N_MISSOES * sizeof(int));
-
-    if(vetor == NULL)
-        return NULL;
-
-    for(i = 0; i < N_MISSOES; i++)
-        vetor[i] = 0;
-
-    return vetor;
-}
-
 int main()
 {
     struct mundo_t w;
     struct evento_t *ev;
-    int agendadas, cumpridas; /* contabilizar missoes */
+    int cumpridas; /* contabilizar missoes */
     int fim_simulacao;
-    int *tentativas_missoes; /*vetor para as tentativas de missoes*/
+    int *tentativas_missoes; /* vetor para as tentativas de missoes*/
 
     srand(0); /* use zero, nao faca com time (0) */
-    agendadas = 0;
-    cumpridas = 0;
 
     w = cria_mundo();
-    tentativas_missoes = cria_vetor();
+    tentativas_missoes = cria_vetor_tentativas();
+    cumpridas = 0;
 
     fim_simulacao = 0;
     while (!fim_simulacao && (ev = retira_lef(w.lef)) != NULL)
@@ -54,8 +40,6 @@ int main()
             case MISSAO:
                 if (missao(&w, ev->tempo, ev->dado1, tentativas_missoes))
                     cumpridas++;
-                else
-                    agendadas++;
                 break;
             case AVISA:
                 avisa(&w, ev->tempo, ev->dado2);
@@ -67,7 +51,7 @@ int main()
                 sai(&w, ev->tempo, ev->dado1, ev->dado2);
                 break;
             case FIM:
-                fim(&w, cumpridas, agendadas, tentativas_missoes);
+                fim(&w, cumpridas, tentativas_missoes);
                 fim_simulacao = 1;
                 break;
         }

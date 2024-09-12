@@ -7,7 +7,7 @@ ENTREGA = theboys-entrega
 CC = gcc
 
 # arquivos-objeto
-	objects = theboys.o lef.o fila.o mundo.o 
+	objects = theboys.o lef.o fila.o mundo.o conjunto.o
      
 all: theboys
 
@@ -30,7 +30,7 @@ theboys.o: theboys.c
 # arquivo TGZ para entregar
 entrega: clean
 	mkdir $(ENTREGA)
-	cp *.c *.h makefile $(ENTREGA)
+	cp *.c *.h conjunto.o makefile $(ENTREGA)
 	chmod 600 $(ENTREGA)/*
 	tar czvf $(ENTREGA).tgz $(ENTREGA)
 	rm -rf $(ENTREGA)

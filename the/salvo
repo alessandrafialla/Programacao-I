@@ -1,0 +1,95 @@
+int busca_menor(int *v, int tam){
+    int i = 0;
+    int menor = 0;
+
+    /* Acha a primeira posicao que nao foi testado*/
+    while((menor < tam) && (v[menor] == -1))
+        menor++;
+    
+    if(menor == tam) /* Todas as posicoes ja foram testadas*/
+        return -1;
+
+    /*Compara essa posicao com outras validas para ver qual a menor*/
+    for(i = menor + 1; i < tam; i++){
+        if(v[i] < v[menor] && (v[i] != -1))
+            menor = i;
+    }
+    return menor;
+  
+}
+
+
+int menor_base_valida(struct mundo_t *w, int tempo, int missao){
+    struct conjunto *requeridas, *uniao;
+    struct local_t loc_missao;
+    int dist[w->n_bases]; /* Vertor aux para armazenar as distancias*/
+    
+    int i, h, menor;
+    
+    loc_missao = w->missoes[missao].local_missao;
+    requeridas = w->missoes[missao].habi_req;
+
+    /*Insere no vetor todas as distancias das bases ate a missao*/
+    for(i = 0; i < w->n_bases; i++){
+        dist[i]= distancia_cartesiana(loc_missao, w->bases[i].coordenadas);
+    }
+    menor = busca_menor(dist, w->n_bases); /* Retorna o indice da menor distancia*/
+     /* representar o indice do vetor e a base */
+    /* Enquanto tem bases para analisar procura a menor valida*/
+    while (menor != -1){ /* Enquanto nao testar todas as distancias*/
+
+        printf("%6d: MISSAO %d BASE %d DIST %d HEROIS ", tempo, missao, menor, dist[menor]);
+        imprime_cjt(w->bases[menor].presentes);
+
+        uniao = cria_cjt(w->n_habilidades); /* Conjunto vazio, vai guardar a uniao das habilidades*/
+        /* Imprime quais sao as habilidades de cada heroi da base*/
+
+        inicia_iterador_cjt(w->bases[menor].presentes);
+        while (incrementa_iterador_cjt(w->bases[menor].presentes, &h)) {
+            printf("%6d: MISSAO %d HAB HEROI %d: ", tempo, missao, h);
+            imprime_cjt(w->herois[h].habilidades); /* Imprime a habilidade do heroi*/
+            uniao = uniao_cjt(uniao, w->herois[h].habilidades); /*Adiciona a habilidade do heroi na uniao*/
+        }
+        
+        printf("%6d: MISSAO %d UNIAO HAB BASE %d: ", tempo, missao, menor);
+        imprime_cjt(uniao);
+
+        /*Se o conjunto tem as habilidades e o atual eh menor que anterior*/
+        if(contido_cjt(requeridas, uniao)){ 
+            destroi_cjt(uniao);
+            return menor;
+        }else {
+            destroi_cjt(uniao);
+            dist[menor] = -1; /* Invalida essa*/
+            menor = busca_menor(dist, w->n_bases);   
+        }
+    }
+    return menor;
+}
+
+
+int missao(struct mundo_t *w, int tempo, int missao){
+    struct conjunto *requeridas;
+    struct evento_t *ev;
+    int menor_valido, heroi;
+
+    requeridas = w->missoes[missao].habi_req;
+
+    printf("%6d: MISSAO %d HAB REQ: ", tempo, missao);
+    imprime_cjt(requeridas); /*Mensagem base da missao*/
+
+    /**/
+    menor_valido = menor_base_valida(w,tempo, missao); /* Recebe a base mais prox que cumpre os objetivos*/
+    
+    if(menor_valido == -1){ /*Se nao achou base valida*/
+        printf("%6d: MISSAO IMPOSSIVEL %d IMPOSSIVEL\n", tempo, missao);
+        ev = cria_evento(tempo + 24*60, MISSAO, -1,-1);
+        insere_lef(w->lef, ev);
+    } else {
+        /* Se achou uma base*/
+        inicia_iterador_cjt (w->bases[menor_valido].presentes); /* inicia o ptr do conjunto*/
+        while(incrementa_iterador_cjt(w->bases[menor_valido].presentes, &heroi))
+            (w->herois[heroi].experiencia)++; /*Incrementa o xp do heroi*/
+    }
+        return 1;
+    }

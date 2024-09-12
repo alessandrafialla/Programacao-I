@@ -36,6 +36,7 @@ struct local_t {
     int x;
     int y;
 };
+
 /* Estrutura da Base */
 struct base_t {
     int id;
@@ -73,24 +74,85 @@ int aleat (int min, int max);
 /* Calcula a distancia cartesiana entre dois pontos */
 int distancia_cartesiana( struct local_t A, struct local_t B);
 
-/* Calcula a distancia de uma base */
-int base_proxima_valida(struct mundo_t *w, int base);
+/* Cria um ponteiro para um vetor do tamanho da quantidade de missoes */
+int *cria_vetor_tentativas();
 
-/* Cria o mundo e suas entidades  */
+/* Retorna o indice do menor valor de um vetor                    */
+/* Ou retorna -1 se todos os valores forem -1 ou se chegou ao fim */
+int busca_indice_menor_valor(int *v, int tam);
+
+/* Retorna o maior valor de um vetor de tamanho max */
+int maior_valor(int *t, int max);
+
+/* Retorna o menor valor de um vetor de tamanho max*/
+int menor_valor(int *t, int max);
+
+/* Retorna a base com a menor distancia da missao e que cumpra os requisitos */
+/* Retorna -1 se nenhuma base valida encontrada                             */
+int menor_base_valida(struct mundo_t *w, int missao);
+
+/* Cria o mundo e suas entidades, inicia o tempo do mundo */
 struct mundo_t cria_mundo();
+
+/* Retorna o heroi[id] inicializado com seus atributos individuais*/
 struct heroi_t cria_heroi(struct mundo_t *w, int id);
+
+/* Retorna a missao[id] inicializada com seus atributos individuais */
 struct missao_t cria_missao(struct mundo_t *w, int id);
+
+/* Retorna a base[id] inicializada com seus atributos individuais */
 struct base_t cria_base (struct mundo_t *w, int id);
+
+/* Cria eventos iniciais para o mundo */
+/* Cria um evento para cada missao, um evento de chega para cada heroi */
+/* E agenda o fim da simulacao criando um vento fim */
 void eventos_iniciais(struct mundo_t *w);
+
+/* Destroi todas as filas e conjuntos das entidades que os tem */
+/* Destroi o conjunto de habilidades distintas do mundo */
+/* Para cada heroi destroi seu conjunto de habilidades */
+/* Para cada missao destroi suas habilidades requeridas */
+/* Para cada base destroi a fila de espera e conjunto de presentes */
+/* Destroi a propria lef */
 void destroi_mundo(struct mundo_t *w);
 
-/* Eventos da simulacao */
+/* ### Eventos da simulacao ### */
+
+/* Evento Chega: Define com base na paciencia se um heroi vai esperar */
+/* na fila para entrar na base ou desistir e ir para outra */
+/* Imprime o resultado e cria o evento correspondente */
 void chega(struct mundo_t *w, int tempo, int heroi, int base);
+
+/* Insere um heroi na fila de espera de uma base */
+/* Cria o evento de aviso para o porteiro        */
 void espera(struct mundo_t *w, int tempo, int heroi, int base);
+
+/* Escolhe um novo destino para o heroi  */
+/* Cria o evento de viagem para a nova base */
 void desiste(struct mundo_t *w, int tempo, int heroi, int base);
+
+/* Calcula o tempo de deslocamento entre a base atual do heroi e destino */
+/* Cria o evento de chegada do heroi na base de destino */
 void viaja(struct mundo_t *w, int tempo, int heroi, int base);
+
+/* Analisa se alguma base tem os requisitos para realizar uma missao */
+/* A base mais proxima tem prioridade e se a base possui as habilidades */
+/* seus herois ganham aumento de experiencia */
+/* Retorna 1 se a missao foi cumprida e 0 se nao */
 int missao(struct mundo_t *w,int tempo, int missao, int *t);
+
+/* Apos o tempo de permanencia, retira o heroi da base e define nova */
+/* Cria evento de viagem para a nova base e o evento de aviso para porteiro */
 void sai(struct mundo_t *w, int tempo, int heroi, int base);
+
+/* Define o tempo de permanencia do heroi na base e cria evento de saida */
 void entra(struct mundo_t *w, int tempo, int heroi, int base);
+
+/* Realiza o tratamento da fila de espera de uma base */
+/* Enquanto tiverem heroi na fila e vagas na base tira da espera */
+/* e insere no conjunto de presentes da base, cria evento de entrada */
 void avisa(struct mundo_t *w, int tempo, int base);
-void fim(struct mundo_t *w, int cumpridas, int agendadas, int *t);
+
+/* Encerra a simulacao do mundo e imprime as estatisticas das missoes */
+/* Imprime todos os herois e as experiencias adquiridas */
+void fim(struct mundo_t *w, int cumpridas, int *t);
